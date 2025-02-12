@@ -1,12 +1,13 @@
 name: CD Pipeline
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI Pipeline"]         # Must match the "name:" of your CI pipeline
+    types: [ "completed" ]
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -27,4 +28,10 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_HOST "cd /home/ubuntu/fastapi-book-project || true && git pull origin main || true && docker build -t fastapi . || true && docker stop fastapi || true && docker rm fastapi || true && docker run -d --name fastapi -p 8000:8000 fastapi"
+          ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_HOST \
+            "cd /home/ubuntu/fastapi-book-project || true && \
+             git pull origin main || true && \
+             docker build -t fastapi . || true && \
+             docker stop fastapi || true && \
+             docker rm fastapi || true && \
+             docker run -d --name fastapi -p 8000:8000 fastapi"
