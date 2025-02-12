@@ -8,24 +8,25 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Build Docker Image
-        run: |
-          docker build -t fastapi-app .
-          echo "Docker image built successfully."
 
       - name: Deploy to Server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           mkdir -p ~/.ssh/
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_HOST "docker stop fastapi || true && docker rm fastapi || true && docker pull ${{ github.repository }}:latest && docker run -d --name fastapi -p 8000:8000 fastapi-app"
-          
+
+          # Pull and run the Docker image from Docker Hub
+          ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_HOST "
+            docker stop fastapi || true &&
+            docker rm fastapi || true &&
+            docker pull $DOCKER_USERNAME/fastapi-book-project:latest &&
+            docker run -d --name fastapi -p 8000:8000 $DOCKER_USERNAME/fastapi-book-project:latest
+          "
