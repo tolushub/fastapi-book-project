@@ -27,4 +27,4 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
-          ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_HOST "docker stop fastapi || true && docker rm fastapi || true && docker pull ${{ github.repository }}:latest && docker run -d --name fastapi -p 8000:8000 fastapi-app"
+          ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_HOST "docker stop fastapi || true && docker rm fastapi || true && docker pull ${{ github.repository }}:latest && docker run -d --name fastapi -p 8000:8000 fastapi"
