@@ -20,7 +20,7 @@ db.books = {
     ),
     2: Book(
         id=2,
-        title="The Lord of the Rings",
+        title="The Lord of the Ring",
         author="J.R.R. Tolkien",
         publication_year=1954,
         genre=Genre.FANTASY,
