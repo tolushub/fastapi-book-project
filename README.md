@@ -33,6 +33,12 @@ fastapi-book-project/
 │   └── test_books.py       # API endpoint tests
 ├── main.py                 # Application entry point
 ├── requirements.txt        # Project dependencies
+├── Dockerfile              # Docker configuration
+├── .github/
+│   └── workflows/
+│       ├── ci.yml          # CI pipeline
+│       └── cd.yml          # CD pipeline
+├── nginx.conf              # Nginx configuration
 └── README.md
 ```
 
