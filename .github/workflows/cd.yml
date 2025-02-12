@@ -15,7 +15,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t fastapi-app .
+          docker build -t fastapi .
           echo "Docker image built successfully."
 
       - name: Deploy to Server
