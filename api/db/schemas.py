@@ -59,5 +59,5 @@ class InMemoryDB:
         Args:
             book_id (int): Book ID.
         """
-        if book_id in self.books:
+        if book_id in self.book:
             del self.books[book_id]
